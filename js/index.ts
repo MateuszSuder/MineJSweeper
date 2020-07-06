@@ -8,6 +8,7 @@ class Square{
 
 class Board{
     private board: Square[][] = [];
+    private firstClicked = false;
     constructor(rows: number, columns: number, bombs: number){
         this.createBoard(rows, columns);
         console.log(this.board);
@@ -24,5 +25,5 @@ class Board{
 
     }
 }
-
+console.log(ranInt(1, 20, 20, false))
 let b = new Board(10, 10, 10);

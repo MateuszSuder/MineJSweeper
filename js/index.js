@@ -7,6 +7,7 @@ class Square {
 class Board {
     constructor(rows, columns, bombs) {
         this.board = [];
+        this.firstClicked = false;
         this.createBoard(rows, columns);
         console.log(this.board);
     }
@@ -21,4 +22,5 @@ class Board {
     rollMinedSquares(minesAmount) {
     }
 }
+console.log(ranInt(1, 20, 20, false));
 let b = new Board(10, 10, 10);
