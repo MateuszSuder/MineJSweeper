@@ -1,29 +1,40 @@
 
 class Square{
-    private mined: boolean;
+    mined: boolean;
     constructor(){
         this.mined = false;
     }
 }
 
 class Board{
+    rows: number;
+    columns: number;
+    bombs: number;
     private board: Square[][] = [];
     private firstClicked = false;
-    constructor(rows: number, columns: number, bombs: number){
-        this.createBoard(rows, columns);
-        console.log(this.board);
+    constructor(r: number, c: number, b: number){
+        this.rows = r;
+        this.columns  = c;
+        this.bombs = b;
+        this.createBoard();
+        this.mineTheBoard();
     }
-    createBoard(r: number, c: number){
-        for(let i=0; i<r; i++){
+    createBoard(){
+        for(let i=0; i<this.rows; i++){
             this.board[i] = [];
-            for(let j=0; j<c; j++){
-                this.board[i][j] = new Square;
+            for(let j=0; j<this.columns; j++){
+                this.board[i][j] = new Square();
             }
         }
     }
-    rollMinedSquares(minesAmount: number){
-
+    mineTheBoard(){
+        let bombDraw: number[] = ranInt(1, this.rows*this.columns, this.bombs, false);
+        for(let o=0; o<bombDraw.length; o++){
+            let bomb = placeIntIn2D(bombDraw[o], this.rows, this.columns);
+            this.board[bomb[0]][bomb[1]].mined=true;
+        }
+        console.log(this.board)
     }
 }
-console.log(ranInt(1, 20, 20, false))
+
 let b = new Board(10, 10, 10);

@@ -13,8 +13,8 @@ function ranInt(begin, end, howMany, repeatNumbers) {
         }
         else {
             if (howMany == 1) {
-                let result;
-                result = Math.floor(Math.random() * (end - begin + 1)) + begin;
+                let result = [];
+                result[0] = Math.floor(Math.random() * (end - begin + 1)) + begin;
                 return result;
             }
             else {
@@ -42,4 +42,14 @@ function ranInt(begin, end, howMany, repeatNumbers) {
             }
         }
     }
+}
+function placeIntIn2D(input, rows, columns) {
+    let output = [];
+    for (let q = 1; q <= rows; q++) {
+        for (let w = 1; w <= columns; w++) {
+            if (((q - 1) * columns + w) == input)
+                return output = [q - 1, w - 1];
+        }
+    }
+    return output;
 }
