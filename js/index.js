@@ -1,7 +1,15 @@
 "use strict";
+var State;
+(function (State) {
+    State[State["default"] = 0] = "default";
+    State[State["flagged"] = 1] = "flagged";
+    State[State["clicked"] = 2] = "clicked";
+    State[State["questionMark"] = 3] = "questionMark";
+})(State || (State = {}));
 class Square {
     constructor() {
         this.mined = false;
+        this.state = State.default;
     }
 }
 class Board {

@@ -1,8 +1,12 @@
 
+enum State {default, flagged, clicked, questionMark}
+
 class Square{
     mined: boolean;
+    state: State; 
     constructor(){
         this.mined = false;
+        this.state = State.default;
     }
 }
 
