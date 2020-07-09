@@ -1,0 +1,26 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+#container{
+    background-color: gray;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#game{
+    display: flex;
+    flex-direction: row;
+    overflow: auto;  
+    flex-wrap: wrap;
+    border-style: inset;
+}
+.square{
+    background-color: rgba(184, 179, 179, 0.158);
+    border-style: outset;
+}
+table{
+    border-spacing: 0;
+}
