@@ -37,8 +37,12 @@ class Board{
             let bomb = placeIntIn2D(bombDraw[o], this.rows, this.columns);
             this.board[bomb[0]][bomb[1]].mined=true;
         }
-        console.log(this.board)
     }
 }
 
+window.addEventListener("resize", function(){
+    resize(columns, rows);
+})
+
 let b = new Board(10, 10, 10);
+
