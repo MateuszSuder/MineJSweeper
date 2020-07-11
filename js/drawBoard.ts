@@ -1,5 +1,7 @@
-let rows = 32;
-let columns = 24;
+//This file contains html/css related functions, which basicly create the game
+
+let rows = 10;
+let columns = 10;
 
 function createBoard(width: number, height: number):void{
     let table = document.createElement("table");
@@ -9,6 +11,7 @@ function createBoard(width: number, height: number):void{
             let td = document.createElement("td");
             let square:HTMLElement = document.createElement("div");
             square.classList.add("square");
+            square.setAttribute("id", j + "," +i);
             td.appendChild(square);
             tr.appendChild(td);
         }
@@ -18,10 +21,9 @@ function createBoard(width: number, height: number):void{
     game!.appendChild(table);
 }
 
-function resize(width: number, height: number):void{
+function resize(width: number, height: number):any{
     let square = document.getElementsByClassName("square") as HTMLCollectionOf<HTMLElement>;
     let arr = Array.from(square);
-    console.log(square.length);
     for(let index in arr){
         arr[index].style.width = "1vw";
         let h:string = (arr[index].clientWidth).toString() + "px";
@@ -29,5 +31,10 @@ function resize(width: number, height: number):void{
         arr[index].style.borderWidth = "0.2vw";
     }
 }
+
+$(window).contextmenu(function(e){
+    e.preventDefault();
+})
+
 createBoard(columns, rows);
 resize(columns, rows);
