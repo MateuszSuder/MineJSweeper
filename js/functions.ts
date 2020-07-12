@@ -1,4 +1,7 @@
-function ranInt(begin: number, end: number, howMany: number, repeatNumbers?: boolean){ //Function generating random integers, last arguemnt is optional (false). Ending number included
+//This file contains useful functions for calculations etc
+
+
+function ranInt(begin: number, end: number, howMany: number, repeatNumbers?: boolean):number[]{ //Function generating random integers, last arguemnt is optional (false). Ending number included
     if(!Number.isInteger(begin) || !Number.isInteger(end) || !Number.isInteger(howMany)){
         throw "Provided values are not integers";
     }else{
@@ -39,7 +42,7 @@ function ranInt(begin: number, end: number, howMany: number, repeatNumbers?: boo
     }
 }
 
-function placeIntIn2D(input: number, rows: number, columns: number){ //Places number in two dimensional array
+function placeIntIn2D(input: number, rows: number, columns: number):number[]{ //Places number in two dimensional array
     let output: number[] = [];
     for(let q = 1; q<=rows; q++){
         for(let w = 1; w<=columns; w++){

@@ -1,4 +1,5 @@
 "use strict";
+//This file contains useful functions for calculations etc
 function ranInt(begin, end, howMany, repeatNumbers) {
     if (!Number.isInteger(begin) || !Number.isInteger(end) || !Number.isInteger(howMany)) {
         throw "Provided values are not integers";
