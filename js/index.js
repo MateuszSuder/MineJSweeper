@@ -1,4 +1,5 @@
 "use strict";
+//This file contains main classes, functions for the game
 var State;
 (function (State) {
     State[State["default"] = 0] = "default";
@@ -6,6 +7,8 @@ var State;
     State[State["clicked"] = 2] = "clicked";
     State[State["questionMark"] = 3] = "questionMark";
 })(State || (State = {}));
+let flag = new Image();
+flag.src = "img/flag.png";
 class Square {
     constructor() {
         this.mined = false;
@@ -38,7 +41,9 @@ class Board {
         }
     }
 }
-window.addEventListener("resize", function () {
-    resize(columns, rows);
+$(".square").contextmenu(function () {
+    let position = (this.id).split(",");
+    b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.flagged;
+    this.appendChild(flag);
 });
 let b = new Board(10, 10, 10);

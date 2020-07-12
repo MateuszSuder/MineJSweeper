@@ -1,5 +1,9 @@
+//This file contains main classes, functions for the game
+
 
 enum State {default, flagged, clicked, questionMark}
+let flag = new Image();
+flag.src = "img/flag.png";
 
 class Square{
     mined: boolean;
@@ -14,8 +18,8 @@ class Board{
     rows: number;
     columns: number;
     bombs: number;
-    private board: Square[][] = [];
-    private firstClicked = false;
+    board: Square[][] = [];
+    firstClicked = false;
     constructor(r: number, c: number, b: number){
         this.rows = r;
         this.columns  = c;
@@ -40,9 +44,12 @@ class Board{
     }
 }
 
-window.addEventListener("resize", function(){
-    resize(columns, rows);
+
+$(".square").contextmenu(function(){
+    let position = (this.id).split(",");
+    b.board[parseInt(position[0])-1][parseInt(position[1])-1].state = State.flagged;
+    this.appendChild(flag);
 })
 
-let b = new Board(10, 10, 10);
 
+let b = new Board(10, 10, 10);
