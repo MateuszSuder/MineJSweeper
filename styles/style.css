@@ -20,7 +20,34 @@
 .square{
     background-color: rgba(184, 179, 179, 0.158);
     border-style: outset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 table{
     border-spacing: 0;
 }
+img{
+    width: inherit;
+    height: inherit;
+}
+  @media (orientation: landscape) {
+    .square{
+        min-width: 3vh;
+        min-height: 3vh;
+        max-width: 9vh;
+        max-height: 9vh;
+        border-width: 0.4vh;
+    }
+  }@media (orientation: portrait) {
+    .square{
+        min-width: 3vw;
+        min-height: 3vw;
+        max-width: 9vw;
+        max-height: 9vw;
+        border-width: 0.4vw;
+    }
+  }
