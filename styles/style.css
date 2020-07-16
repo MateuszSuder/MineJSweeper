@@ -13,12 +13,17 @@
 #game{
     display: flex;
     flex-direction: row;
-    overflow: auto;  
+    overflow: hidden;  
     flex-wrap: wrap;
     border-style: inset;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: auto;
+    height: auto;
 }
 .square{
-    background-color: rgba(184, 179, 179, 0.158);
+    background-color: rgba(168, 168, 168, 0.747);
     border-style: outset;
     display: flex;
     justify-content: center;
@@ -29,25 +34,9 @@
 }
 table{
     border-spacing: 0;
+    table-layout: fixed;
 }
 img{
     width: inherit;
     height: inherit;
 }
-  @media (orientation: landscape) {
-    .square{
-        min-width: 3vh;
-        min-height: 3vh;
-        max-width: 9vh;
-        max-height: 9vh;
-        border-width: 0.4vh;
-    }
-  }@media (orientation: portrait) {
-    .square{
-        min-width: 3vw;
-        min-height: 3vw;
-        max-width: 9vw;
-        max-height: 9vw;
-        border-width: 0.4vw;
-    }
-  }
