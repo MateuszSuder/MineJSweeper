@@ -1,6 +1,6 @@
 "use strict";
 //This file contains useful functions for calculations etc
-function ranInt(begin, end, howMany, repeatNumbers) {
+function ranInt(begin, end, howMany, repeatNumbers, except) {
     if (!Number.isInteger(begin) || !Number.isInteger(end) || !Number.isInteger(howMany)) {
         throw "Provided values are not integers";
     }
@@ -27,12 +27,15 @@ function ranInt(begin, end, howMany, repeatNumbers) {
                     return result;
                 }
                 else {
-                    if (howMany > ((end - begin) + 1))
+                    if (howMany > (((end - begin) + 1)))
                         throw "Can't return " + howMany + " ints. Range is " + begin + " to " + end;
                     let allPossibilities = [];
                     for (let m = 0; m <= (end - begin); m++) {
+                        if ((begin + m) == except)
+                            continue;
                         allPossibilities[m] = begin + m;
                     }
+                    allPossibilities = allPossibilities.filter(item => item);
                     for (let p = 0; p < howMany; p++) {
                         let temp = Math.floor(Math.random() * allPossibilities.length);
                         result[p] = allPossibilities[temp];
