@@ -2,15 +2,17 @@
 
 
 enum State {default, flagged, clicked, questionMark}
-let flag = new Image();
-flag.src = "img/flag.png";
+
 
 class Square{
     mined: boolean;
-    state: State; 
+    state: State;
+    content: number | string;
     constructor(){
         this.mined = false;
         this.state = State.default;
+        this.content = -1;
+
     }
 }
 
@@ -25,7 +27,6 @@ class Board{
         this.columns  = c;
         this.bombs = b;
         this.createBoard();
-        this.mineTheBoard();
     }
     createBoard(){
         for(let i=0; i<this.rows; i++){
@@ -35,11 +36,30 @@ class Board{
             }
         }
     }
-    mineTheBoard(){
-        let bombDraw: number[] = ranInt(1, this.rows*this.columns, this.bombs, false);
+    mineTheBoard(fClick: string[]){
+        let clickToNumber;
+        console.log(fClick);
+        clickToNumber = (parseInt(fClick[0])-1)*columns + parseInt(fClick[1]);
+        console.log(clickToNumber);
+        let bombDraw: number[] = ranInt(1, this.rows*this.columns, this.bombs, false, clickToNumber);
         for(let o=0; o<bombDraw.length; o++){
             let bomb = placeIntIn2D(bombDraw[o], this.rows, this.columns);
             this.board[bomb[0]][bomb[1]].mined=true;
+            this.board[bomb[0]][bomb[1]].content="b";
+        }
+    }
+    showAll(){
+        let square = document.getElementsByClassName("square") as HTMLCollectionOf<HTMLElement>;
+        let arr = Array.from(square);
+        for(let index in arr){
+            let in2D = placeIntIn2D(parseInt(index)+1, rows, columns);
+            $(arr[index]).css({"border-style": "solid", "border-color": "gray"});
+            if(this.board[in2D[0]][in2D[1]].content == "b"){
+                let bomb = new Image();
+                bomb.src = "img/bomb.png";
+                $(arr[index]).append(bomb);
+                
+            }
         }
     }
 }
@@ -47,9 +67,37 @@ class Board{
 
 $(".square").contextmenu(function(){
     let position = (this.id).split(",");
-    b.board[parseInt(position[0])-1][parseInt(position[1])-1].state = State.flagged;
-    this.appendChild(flag);
+    if(b.board[parseInt(position[0])-1][parseInt(position[1])-1].state == State.default){
+        let flag = new Image();
+        flag.src = "img/flag.png";
+        $(flag).attr("id", "flag");
+        this.appendChild(flag);
+        b.board[parseInt(position[0])-1][parseInt(position[1])-1].state = State.flagged;
+    }else if(b.board[parseInt(position[0])-1][parseInt(position[1])-1].state == State.flagged){
+        $(this).children().remove();
+        b.board[parseInt(position[0])-1][parseInt(position[1])-1].state = State.default;
+    }else{
+        return 0;
+    }
+    
+})
+
+$(".square").click(function(){
+    let position = (this.id).split(",");
+    if(b.board[parseInt(position[0])-1][parseInt(position[1])-1].state == State.default){
+        $(this).css({"border-style": "solid", "border-color": "gray"});
+        if(!b.firstClicked){
+            b.mineTheBoard(position);
+            b.firstClicked = true;
+            b.board[parseInt(position[0])-1][parseInt(position[1])-1].state = State.clicked;
+            b.showAll();
+        }else{
+            b.board[parseInt(position[0])-1][parseInt(position[1])-1].state = State.clicked;
+        }
+    }else{
+        return 0;
+    }
 })
 
 
-let b = new Board(10, 10, 10);
+let b = new Board(rows, columns, bombs);
