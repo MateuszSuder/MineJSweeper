@@ -40,3 +40,19 @@ img{
     width: inherit;
     height: inherit;
 }
+#main{
+    height: auto;
+    border-style: inset;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+#top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#face{
+    background-color: red;
+    border-style: outset;
+}
