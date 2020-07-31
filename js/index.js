@@ -33,14 +33,40 @@ class Board {
     }
     mineTheBoard(fClick) {
         let clickToNumber;
-        console.log(fClick);
         clickToNumber = (parseInt(fClick[0]) - 1) * columns + parseInt(fClick[1]);
-        console.log(clickToNumber);
         let bombDraw = ranInt(1, this.rows * this.columns, this.bombs, false, clickToNumber);
         for (let o = 0; o < bombDraw.length; o++) {
             let bomb = placeIntIn2D(bombDraw[o], this.rows, this.columns);
             this.board[bomb[0]][bomb[1]].mined = true;
             this.board[bomb[0]][bomb[1]].content = "b";
+        }
+        for (let z = 0; z < this.rows; z++) {
+            for (let x = 0; x < this.columns; x++) {
+                if (this.board[z][x].mined == true) {
+                    continue;
+                }
+                else {
+                    let temp = 0;
+                    //Counting bombs
+                    for (let c = -1; c <= 1; c++) {
+                        for (let v = -1; v <= 1; v++) {
+                            if (c == 0 && v == 0) {
+                                continue;
+                            }
+                            else {
+                                if (z + c < 0 || z + c >= this.rows || x + v < 0 || x + v >= this.columns) {
+                                    continue;
+                                }
+                                else {
+                                    if (this.board[z + c][x + v].mined == true)
+                                        temp++;
+                                }
+                            }
+                        }
+                    }
+                    this.board[z][x].content = temp;
+                }
+            }
         }
     }
     showAll() {
@@ -53,6 +79,9 @@ class Board {
                 let bomb = new Image();
                 bomb.src = "img/bomb.png";
                 $(arr[index]).append(bomb);
+            }
+            else {
+                $(arr[index]).append((this.board[in2D[0]][in2D[1]].content).toString());
             }
         }
     }
