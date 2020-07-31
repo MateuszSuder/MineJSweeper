@@ -1,7 +1,7 @@
 //This file contains html/css related functions, which basicly create the game
 
-let columns = 10;
-let rows = 10;
+let columns = 30;
+let rows = 16;
 let bombs = 90;
 
 function createBoard(width: number, height: number):void{
@@ -33,23 +33,29 @@ function fit(width: number, height: number):void{
         //We need to care more about height in that case
         let square = document.getElementsByClassName("square") as HTMLCollectionOf<HTMLElement>;
         let arr = Array.from(square);
-        let size = 90/height;
+        let size = 85/height;
         for(let index in arr){
             arr[index].style.width = size + "vh";
             arr[index].style.height = size + "vh";
             arr[index].style.borderWidth = "0.5vh";
         }
+        $("#top").css("height", size+"vh");
+        $("#face").css("height", size+"vh");
+        $("#face").css("width", size+"vh");
     }
     else{
         //We need to care more about width in that case
         let square = document.getElementsByClassName("square") as HTMLCollectionOf<HTMLElement>;
         let arr = Array.from(square);
-        let size = 90/width;
+        let size = 85/width;
         for(let index in arr){
             arr[index].style.width = size + "vw";
             arr[index].style.height = size + "vw";
             arr[index].style.borderWidth = "0.5vw";
         }
+        $("#top").css("height", size+"vw");
+        $("#face").css("height", size+"vw");
+        $("#face").css("width", size+"vw");
     }
 }
 $(window).contextmenu(function(e){
