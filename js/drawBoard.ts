@@ -1,8 +1,10 @@
 //This file contains html/css related functions, which basicly create the game
 
-let columns = 30;
-let rows = 16;
-let bombs = 90;
+let columns: number = 10;
+let rows: number = 10;
+let bombs: number = 10;
+let lost: boolean = false;
+let time: number = 0;
 
 function createBoard(width: number, height: number):void{
     let table = document.createElement("table");
@@ -21,7 +23,13 @@ function createBoard(width: number, height: number):void{
     let game = document.getElementById("game");
     game!.appendChild(table);
     fit(width, height);
-    
+    if(bombs<10){
+        $("#bombs").html("00"+bombs);
+    }else if(bombs<100 && bombs >= 10){
+        $("#bombs").html("0"+bombs);
+    }else{
+        $("#bombs").html(bombs.toString());
+    }
 }
 $(window).resize(function(){
     fit(columns, rows);
@@ -42,6 +50,7 @@ function fit(width: number, height: number):void{
         $("#top").css("height", size+"vh");
         $("#face").css("height", size+"vh");
         $("#face").css("width", size+"vh");
+        $("#bombs, #time").css("font-size", size+"vh");
     }
     else{
         //We need to care more about width in that case
@@ -56,8 +65,14 @@ function fit(width: number, height: number):void{
         $("#top").css("height", size+"vw");
         $("#face").css("height", size+"vw");
         $("#face").css("width", size+"vw");
+        $("#bombs, #time").css("font-size", size+"vw");
     }
 }
+
+function createOptions(){
+    
+}
+
 $(window).contextmenu(function(e){
     e.preventDefault();
 })
