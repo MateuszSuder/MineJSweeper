@@ -1,7 +1,7 @@
 //This file contains useful functions for calculations etc
 
 
-function ranInt(begin: number, end: number, howMany: number, repeatNumbers?: boolean, except?: number):number[]{ //Function generating random integers, last arguemnt is optional (false). Ending number included
+function ranInt(begin: number, end: number, howMany: number, repeatNumbers?: boolean, except?: number[]):number[]{ //Function generating random integers, last arguemnt is optional (false). Ending number included
     if(!Number.isInteger(begin) || !Number.isInteger(end) || !Number.isInteger(howMany)){
         throw "Provided values are not integers";
     }else{
@@ -28,8 +28,17 @@ function ranInt(begin: number, end: number, howMany: number, repeatNumbers?: boo
                         throw "Can't return " + howMany + " ints. Range is " + begin + " to " + end;
                     let allPossibilities: number[] = [];
                     for(let m = 0; m <= (end-begin); m++){
-                        if((begin+m)==except)           
-                            continue;             
+                        let exception: boolean = false;
+                        if(typeof except != undefined){
+                            for(let ex = 0; ex < except!.length; ex++){
+                                if(except![ex] == (begin+m)){
+                                    exception = true;
+                                }
+                            }
+                        }
+                        if(exception){
+                            continue;
+                        } 
                         allPossibilities[m] = begin + m;
                     }
                     allPossibilities = allPossibilities.filter(item => item);

@@ -31,8 +31,17 @@ function ranInt(begin, end, howMany, repeatNumbers, except) {
                         throw "Can't return " + howMany + " ints. Range is " + begin + " to " + end;
                     let allPossibilities = [];
                     for (let m = 0; m <= (end - begin); m++) {
-                        if ((begin + m) == except)
+                        let exception = false;
+                        if (typeof except != undefined) {
+                            for (let ex = 0; ex < except.length; ex++) {
+                                if (except[ex] == (begin + m)) {
+                                    exception = true;
+                                }
+                            }
+                        }
+                        if (exception) {
                             continue;
+                        }
                         allPossibilities[m] = begin + m;
                     }
                     allPossibilities = allPossibilities.filter(item => item);
