@@ -49,10 +49,14 @@ img{
 }
 #top{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 #face{
     background-color: red;
     border-style: outset;
+}
+#bombs, #time{
+    height:100%;
+    font-size: 100%;
 }
