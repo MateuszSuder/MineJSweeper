@@ -32,8 +32,15 @@ class Board {
         }
     }
     mineTheBoard(fClick) {
-        let clickToNumber;
-        clickToNumber = (parseInt(fClick[0]) - 1) * columns + parseInt(fClick[1]);
+        let clickToNumber = [];
+        for (let c = -1; c <= 1; c++) {
+            for (let v = -2; v <= 2; v++) {
+                if ((parseInt(fClick[0]) - 1 + c < 0 || (parseInt(fClick[0])) - 1 + c >= this.rows || parseInt(fClick[1]) - 1 + v < 0 || parseInt(fClick[1]) - 1 + v >= this.columns)) {
+                    continue;
+                }
+                clickToNumber.push((parseInt(fClick[0]) - 1 + c) * columns + parseInt(fClick[1]) + v);
+            }
+        }
         let bombDraw = ranInt(1, this.rows * this.columns, this.bombs, false, clickToNumber);
         for (let o = 0; o < bombDraw.length; o++) {
             let bomb = placeIntIn2D(bombDraw[o], this.rows, this.columns);
@@ -78,47 +85,131 @@ class Board {
             if (this.board[in2D[0]][in2D[1]].content == "b") {
                 let bomb = new Image();
                 bomb.src = "img/bomb.png";
-                $(arr[index]).append(bomb);
+                $(arr[index]).html(bomb);
             }
             else {
-                $(arr[index]).append((this.board[in2D[0]][in2D[1]].content).toString());
+                $(arr[index]).html((this.board[in2D[0]][in2D[1]].content).toString());
             }
+        }
+    }
+    reveal(y, x) {
+        let square = document.getElementsByClassName("square");
+        let arr = Array.from(square);
+        let toInt = y * this.columns + x;
+        if (this.board[y][x].content == "b") {
+            let bomb = new Image();
+            bomb.src = "img/bomb.png";
+            $(arr[toInt]).append(bomb);
+            $(arr[toInt]).css("background-color", "red");
+            lost = true;
+            console.log("You lost");
+            this.showAll();
+        }
+        else if (this.board[y][x].content == 0) {
+            $(arr[toInt]).append(this.board[y][x].content.toString());
+            for (let c = -1; c <= 1; c++) {
+                for (let v = -1; v <= 1; v++) {
+                    if (c == 0 && v == 0) {
+                        continue;
+                    }
+                    else {
+                        if (y + c < 0 || y + c >= this.rows || x + v < 0 || x + v >= this.columns) {
+                            continue;
+                        }
+                        else {
+                            if (this.board[y + c][x + v].state == State.default) {
+                                $(arr[(y + c) * this.columns + (x + v)]).click();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            $(arr[toInt]).append(this.board[y][x].content.toString());
         }
     }
 }
 $(".square").contextmenu(function () {
     let position = (this.id).split(",");
-    if (b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state == State.default) {
+    if (b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state == State.default && !lost) {
         let flag = new Image();
         flag.src = "img/flag.png";
         $(flag).attr("id", "flag");
         this.appendChild(flag);
         b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.flagged;
+        let bo = parseInt($("#bombs").text()) - 1;
+        if (bo < 10) {
+            $("#bombs").html("00" + bo);
+        }
+        else if (bo < 100 && bo >= 10) {
+            $("#bombs").html("0" + bo);
+        }
+        else {
+            $("#bombs").html(bo.toString());
+        }
     }
-    else if (b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state == State.flagged) {
+    else if (b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state == State.flagged && !lost) {
         $(this).children().remove();
         b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.default;
+        let bo = parseInt($("#bombs").text()) + 1;
+        if (bo < 10) {
+            $("#bombs").html("00" + bo);
+        }
+        else if (bo < 100 && bo >= 10) {
+            $("#bombs").html("0" + bo);
+        }
+        else {
+            $("#bombs").html(bo.toString());
+        }
     }
     else {
         return 0;
     }
 });
 $(".square").click(function () {
-    let position = (this.id).split(",");
-    if (b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state == State.default) {
-        $(this).css({ "border-style": "solid", "border-color": "gray" });
-        if (!b.firstClicked) {
-            b.mineTheBoard(position);
-            b.firstClicked = true;
-            b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.clicked;
-            b.showAll();
-        }
-        else {
-            b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.clicked;
-        }
-    }
-    else {
+    if (lost) {
         return 0;
     }
+    else {
+        let position = (this.id).split(",");
+        if (b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state == State.default) { //At unmarked, not clicked square
+            $(this).css({ "border-style": "solid", "border-color": "gray" });
+            if (!b.firstClicked) { //If it is first click
+                b.mineTheBoard(position);
+                b.firstClicked = true;
+                b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.clicked;
+                b.reveal(parseInt(position[0]) - 1, parseInt(position[1]) - 1);
+                let t = setInterval(timer, 1000);
+            }
+            else {
+                b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.clicked;
+                b.reveal(parseInt(position[0]) - 1, parseInt(position[1]) - 1);
+            }
+        }
+        else {
+            return 0;
+        }
+    }
 });
+$("#face").click(function () {
+    b.showAll();
+});
+function timer() {
+    if (!lost) {
+        time++;
+        if (time < 10) {
+            $("#time").html("00" + time);
+        }
+        else if (time < 100 && time >= 10) {
+            $("#time").html("0" + time);
+        }
+        else if (time <= 999 && time >= 100) {
+            $("#time").html(time.toString());
+        }
+        else {
+            $("#time").html("999");
+        }
+    }
+}
 let b = new Board(rows, columns, bombs);
