@@ -15,10 +15,25 @@
         <div id="main">
             <div id="top">
                 <div id="bombs">000</div>
-                <div id="face"></div>
+                <div id="face" onclick="toggleOptions()"></div>
                 <div id="time">000</div>
             </div>
-            <div id="game">
+            <div id="game"></div>
+        </div>
+        <div id="options-outer">
+            <div id="options-inner">
+                <form action="javascript:void(0);">
+                    Select difficulty:<br>
+                    <label for="begginer">Begginer </label> <input type="radio" name="difficulty" id="begginer" onchange="onCustom(this.id)"><br>
+                    <label for="intermediate">Intermediate </label> <input type="radio" name="difficulty" id="intermediate" onchange="onCustom(this.id)"><br>
+                    <label for="expert">Expert </label> <input type="radio" name="difficulty" id="expert" onchange="onCustom(this.id)"><br>
+                    <label for="custom">Custom </label> <input type="radio" name="difficulty" id="custom" onchange="onCustom(this.id)"><br>
+                    <label for="rows">Number of rows: </label> <input type="number" id="rows" disabled><br>
+                    <label for="columns">Number of columns: </label> <input type="number" id="columns" disabled><br>
+                    <label for="bombsNumber">Number of bombs: </label> <input type="number" id="bombsNumber" disabled><br>
+                    <input type="submit" value="Save" onclick="saveDiff()">
+                </form><br>
+                <div id="error"></div>
             </div>
         </div>
     </div>
