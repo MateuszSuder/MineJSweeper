@@ -3,8 +3,10 @@
 let columns = 10;
 let rows = 10;
 let bombs = 10;
-let lost = false;
+let end = false;
 let time = 0;
+let numberSquares = 0;
+let revealedSquares = 0;
 function createBoard(width, height) {
     let table = document.createElement("table");
     for (let i = 1; i <= height; i++) {
@@ -67,9 +69,77 @@ function fit(width, height) {
         $("#bombs, #time").css("font-size", size + "vw");
     }
 }
-function createOptions() {
+function onCustom(id) {
+    let rowsNode = $("#rows");
+    let columnsNode = $("#columns");
+    let bombsNode = $("#bombsNumber");
+    if (id == "begginer" || id == "intermediate" || id == "expert") {
+        if (!($("#rows, #columns, #bombsNumber").prop("disabled"))) {
+            $("#rows, #columns, #bombsNumber").prop("disabled", true);
+        }
+        if (id == "begginer") {
+            rowsNode.val(10);
+            columnsNode.val(10);
+            bombsNode.val(10);
+        }
+        else if (id == "intermediate") {
+            rowsNode.val(16);
+            columnsNode.val(16);
+            bombsNode.val(40);
+        }
+        else {
+            rowsNode.val(16);
+            columnsNode.val(30);
+            bombsNode.val(99);
+        }
+    }
+    else {
+        $(rowsNode).prop("disabled", false);
+        $(columnsNode).prop("disabled", false);
+        $(bombsNode).prop("disabled", false);
+    }
 }
+function saveDiff() {
+    let rowsNode = $("#rows");
+    let columnsNode = $("#columns");
+    let bombsNode = $("#bombsNumber");
+    let rValue = parseInt("" + $(rowsNode).val());
+    let cValue = parseInt("" + $(columnsNode).val());
+    let bValue = parseInt("" + $(bombsNode).val());
+    try {
+        checkForErrors(rValue, cValue, bValue);
+    }
+    catch (error) {
+        return $("#error").html(error);
+    }
+    initalizeBoard(rValue, cValue, bValue);
+    toggleOptions();
+}
+function checkForErrors(rValue, cValue, bValue) {
+    if (rValue < 8 || rValue > 30) {
+        throw "Rows must be in 8-30 range";
+    }
+    if (cValue < 8 || cValue > 30) {
+        throw "Columns must be in 8-30 range";
+    }
+    if (bValue < 10 || bValue > 200) {
+        throw "Bombs must be in 10-200 range";
+    }
+    if (bValue > rValue * cValue - 10) {
+        throw "Too many bombs for that board! Number of bombs must be lesser than columns * rows - 10";
+    }
+}
+function toggleOptions() {
+    $("#options-outer").toggle("slow");
+}
+$("#options-outer").click(function (e) {
+    if (e.target.id == "options-outer") {
+        toggleOptions();
+    }
+    else {
+        return;
+    }
+});
 $(window).contextmenu(function (e) {
     e.preventDefault();
 });
-createBoard(columns, rows);
