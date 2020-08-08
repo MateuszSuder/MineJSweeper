@@ -92,7 +92,9 @@ class Board {
             }
             else {
                 if (this.board[in2D[0]][in2D[1]].content != 0) {
-                    $(arr[index]).html((this.board[in2D[0]][in2D[1]].content).toString());
+                    let number = new Image();
+                    number.src = "img/" + this.board[in2D[0]][in2D[1]].content.toString() + ".png";
+                    $(arr[index]).html(number);
                 }
             }
         }
@@ -107,7 +109,9 @@ class Board {
             $(arr[toInt]).append(bomb);
             $(arr[toInt]).css("background-color", "red");
             end = true;
+            $("#face > img").attr("src", "img/lose.png");
             this.showAll();
+            clearInterval(t);
         }
         else if (this.board[y][x].content == 0) {
             revealedSquares++;
@@ -131,7 +135,10 @@ class Board {
         }
         else {
             revealedSquares++;
-            $(arr[toInt]).text(this.board[y][x].content.toString());
+            let number = new Image();
+            number.src = "img/" + this.board[y][x].content.toString() + ".png";
+            $(arr[toInt]).html(number);
+            //$(arr[toInt]).text(this.board[y][x].content.toString());
         }
     }
 }
@@ -154,6 +161,7 @@ function timer() {
 }
 let t = setInterval(timer);
 function initalizeBoard(r, c, bo) {
+    $("#face > img").attr("src", "img/normal.png");
     revealedSquares = 0;
     end = false;
     time = 0;
@@ -181,8 +189,9 @@ $("#game").on("click", ".square", function () {
                 b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.clicked;
                 b.reveal(parseInt(position[0]) - 1, parseInt(position[1]) - 1);
                 if (numberSquares == revealedSquares) {
-                    console.log("You won!");
                     end = true;
+                    $("#face > img").attr("src", "img/win.png");
+                    clearInterval(t);
                     b.showAll();
                 }
                 t = setInterval(timer, 1000);
@@ -191,7 +200,9 @@ $("#game").on("click", ".square", function () {
                 b.board[parseInt(position[0]) - 1][parseInt(position[1]) - 1].state = State.clicked;
                 b.reveal(parseInt(position[0]) - 1, parseInt(position[1]) - 1);
                 if (numberSquares == revealedSquares) {
+                    $("#face > img").attr("src", "img/win.png");
                     end = true;
+                    clearInterval(t);
                     b.showAll();
                 }
             }
@@ -237,4 +248,12 @@ $("#game").on("contextmenu", ".square", function () {
     else {
         return 0;
     }
+});
+$("#game").on("mousedown", ".square", function () {
+    if (!end)
+        $("#face > img").attr("src", "img/click.png");
+});
+$("#game").on("mouseup", ".square", function () {
+    if (!end)
+        $("#face > img").attr("src", "img/normal.png");
 });
