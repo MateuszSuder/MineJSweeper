@@ -53,10 +53,11 @@ function fit(width: number, height: number):void{
         let square = document.getElementsByClassName("square") as HTMLCollectionOf<HTMLElement>;
         let arr = Array.from(square);
         let size = 85/height;
+        let bWidth = 8/height;
         for(let index in arr){
             arr[index].style.width = size + "vh";
             arr[index].style.height = size + "vh";
-            arr[index].style.borderWidth = "0.5vh";
+            arr[index].style.borderWidth = bWidth + "vh";
         }
         $("#top").css("height", size+"vh");
         $("#face").css("height", size+"vh");
@@ -68,10 +69,11 @@ function fit(width: number, height: number):void{
         let square = document.getElementsByClassName("square") as HTMLCollectionOf<HTMLElement>;
         let arr = Array.from(square);
         let size = 85/width;
+        let bWidth = 8/width;
         for(let index in arr){
             arr[index].style.width = size + "vw";
             arr[index].style.height = size + "vw";
-            arr[index].style.borderWidth = "0.5vw";
+            arr[index].style.borderWidth = bWidth + "vw";
         }
         $("#top").css("height", size+"vw");
         $("#face").css("height", size+"vw");
@@ -119,6 +121,16 @@ function saveDiff(){
     let cValue: number = parseInt("" + $(columnsNode).val());
     let bValue: number = parseInt("" + $(bombsNode).val());
 
+    if(isNaN(rValue)){
+        rValue = rows;
+    }
+    if(isNaN(cValue)){
+        cValue = rows;
+    }
+    if(isNaN(bValue)){
+        bValue = rows;
+    }
+
     try{
         checkForErrors(rValue, cValue, bValue);
     }catch(error){
@@ -140,12 +152,13 @@ function checkForErrors(rValue: number, cValue: number, bValue: number){
     if(bValue < 10 || bValue > 200){
         throw "Bombs must be in 10-200 range";
     }
-    if(bValue > rValue * cValue - 10){
-        throw "Too many bombs for that board! Number of bombs must be lesser than columns * rows - 10";
+    if(bValue >= rValue * cValue - 40){
+        throw "Too many bombs for that board! Number of bombs must be lesser than columns * rows - 40";
     }
 }
 
 function toggleOptions(){
+    $("#error").html("");
     $("#options-outer").toggle("slow");
 }
 

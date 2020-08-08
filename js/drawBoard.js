@@ -43,10 +43,11 @@ function fit(width, height) {
         let square = document.getElementsByClassName("square");
         let arr = Array.from(square);
         let size = 85 / height;
+        let bWidth = 8 / height;
         for (let index in arr) {
             arr[index].style.width = size + "vh";
             arr[index].style.height = size + "vh";
-            arr[index].style.borderWidth = "0.5vh";
+            arr[index].style.borderWidth = bWidth + "vh";
         }
         $("#top").css("height", size + "vh");
         $("#face").css("height", size + "vh");
@@ -58,10 +59,11 @@ function fit(width, height) {
         let square = document.getElementsByClassName("square");
         let arr = Array.from(square);
         let size = 85 / width;
+        let bWidth = 8 / width;
         for (let index in arr) {
             arr[index].style.width = size + "vw";
             arr[index].style.height = size + "vw";
-            arr[index].style.borderWidth = "0.5vw";
+            arr[index].style.borderWidth = bWidth + "vw";
         }
         $("#top").css("height", size + "vw");
         $("#face").css("height", size + "vw");
@@ -106,6 +108,15 @@ function saveDiff() {
     let rValue = parseInt("" + $(rowsNode).val());
     let cValue = parseInt("" + $(columnsNode).val());
     let bValue = parseInt("" + $(bombsNode).val());
+    if (isNaN(rValue)) {
+        rValue = rows;
+    }
+    if (isNaN(cValue)) {
+        cValue = rows;
+    }
+    if (isNaN(bValue)) {
+        bValue = rows;
+    }
     try {
         checkForErrors(rValue, cValue, bValue);
     }
@@ -125,11 +136,12 @@ function checkForErrors(rValue, cValue, bValue) {
     if (bValue < 10 || bValue > 200) {
         throw "Bombs must be in 10-200 range";
     }
-    if (bValue > rValue * cValue - 10) {
-        throw "Too many bombs for that board! Number of bombs must be lesser than columns * rows - 10";
+    if (bValue >= rValue * cValue - 40) {
+        throw "Too many bombs for that board! Number of bombs must be lesser than columns * rows - 40";
     }
 }
 function toggleOptions() {
+    $("#error").html("");
     $("#options-outer").toggle("slow");
 }
 $("#options-outer").click(function (e) {
