@@ -245,7 +245,15 @@ $("#game").on("contextmenu", ".square", function(){
 
         let bo = parseInt($("#bombs").text())-1;
 
-        if(bo<10){
+        if(bo <= -99){
+            $("#bombs").html("-99");
+        }else if(bo <= -10 && bo <= -99){
+            $("#bombs").html("-"+bombs*-1);
+        }else if(bo < 0 && bo > -10){
+            console.log("3")
+            $("#bombs").html("-0"+bo*-1);
+        }else if(bo<10 && bo >= 0){
+            console.log("4")
             $("#bombs").html("00"+bo);
         }else if(bo<100 && bo >= 10){
             $("#bombs").html("0"+bo);
@@ -259,7 +267,15 @@ $("#game").on("contextmenu", ".square", function(){
 
         let bo = parseInt($("#bombs").text())+1;
 
-        if(bo<10){
+        if(bo <= -99){
+            $("#bombs").html("-99");
+        }else if(bo <= -10 && bo <= -99){
+            $("#bombs").html("-"+bombs*-1);
+        }else if(bo < 0 && bo > -10){
+            console.log("3")
+            $("#bombs").html("-0"+bo*-1);
+        }else if(bo<10 && bo >= 0){
+            console.log("4")
             $("#bombs").html("00"+bo);
         }else if(bo<100 && bo >= 10){
             $("#bombs").html("0"+bo);

@@ -24,7 +24,18 @@ function createBoard(width, height) {
     let game = document.getElementById("game");
     game.appendChild(table);
     fit(width, height);
-    if (bombs < 10) {
+    if (bombs <= -99) {
+        $("#bombs").html("-99");
+    }
+    else if (bombs <= -10 && bombs <= -99) {
+        $("#bombs").html("-" + bombs * -1);
+    }
+    else if (bombs < 0 && bombs > -10) {
+        console.log("3");
+        $("#bombs").html("-0" + bombs * -1);
+    }
+    else if (bombs < 10 && bombs >= 0) {
+        console.log("4");
         $("#bombs").html("00" + bombs);
     }
     else if (bombs < 100 && bombs >= 10) {
